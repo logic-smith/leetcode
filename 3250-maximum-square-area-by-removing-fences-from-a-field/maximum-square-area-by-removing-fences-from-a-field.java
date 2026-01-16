@@ -1,0 +1,39 @@
+class Solution {
+    public int maximizeSquareArea(int m, int n, int[] hFences, int[] vFences) {
+        //storing horizontal fences
+        List<Integer> h = new ArrayList<>();
+        h.add(1); //including borders 1 and m
+        h.add(m);
+        for(int f: hFences) h.add(f);
+
+        //storing vertical fences
+        List<Integer> v = new ArrayList<>();
+        v.add(1);
+        v.add(n);
+        for(int f: vFences) v.add(f);
+
+        //calculating all possible horizontal gaps
+        Set<Integer> hGaps = new HashSet<>();
+        for(int i=0; i<h.size(); i++){
+            for(int j=i+1; j<h.size(); j++){
+                hGaps.add(Math.abs(h.get(i) - h.get(j)));
+            }
+        }
+
+        //calculating all possible vertical gaps
+        long maxSide = -1;
+        for(int i=0; i<v.size(); i++){
+            for(int j=1; j<v.size(); j++){
+                int gap = Math.abs(v.get(i) - v.get(j));
+                if(hGaps.contains(gap)){
+                    maxSide = Math.max(maxSide, gap);
+                }
+            }
+        }
+
+        //final call
+        if(maxSide == -1) return -1;
+        long mod = 1_000_000_007;
+        return (int) ((maxSide * maxSide) % mod);
+    }
+}
