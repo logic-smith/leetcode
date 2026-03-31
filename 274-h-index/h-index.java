@@ -1,15 +1,17 @@
 class Solution {
     public int hIndex(int[] citations) {
-        Arrays.sort(citations);
-        int h=0;
-        int n=citations.length;
-        for(int i=n-1; i>=0; i--){
-            if(citations[i] >= n-i){
-                h = n-i;
-            }else{
-                break;
-            }
+        int n = citations.length;
+        int[] freq = new int[n+1];
+
+        for(int c: citations){
+            freq[Math.min(c,n)]++;
         }
-        return h;
+
+        int papers=0;
+        for(int h=n; h>=0; h--){
+            papers += freq[h];
+            if(papers >= h) return h;
+        }
+        return 0;
     }
 }
